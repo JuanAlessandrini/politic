@@ -43,6 +43,7 @@ function clasifyHistoric(){
 }
 
 function getArrayTipos(&$tipos){
+	include("conexion.php");
 	$consulta="select * from tags";
 	$lastTag = "";
 	$index = -1;
@@ -58,7 +59,7 @@ function getArrayTipos(&$tipos){
 					$index++;
 					$tipos[$index] = $lastTag;
 				}
-				$v1 = array_push($row[2]);
+				array_push($v1, $row[2]);
 			}
 		}
 
