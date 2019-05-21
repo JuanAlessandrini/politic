@@ -1,4 +1,5 @@
 <?php
+
 function clasify($ley){
 	$palabras_clave = array();
 	$indice = -1;
@@ -43,6 +44,7 @@ function clasifyHistoric(){
 }
 
 function getArrayTipos(&$tipos){
+	$v1 = array();
 	include("conexion.php");
 	$consulta="select * from tags";
 	$lastTag = "";
@@ -59,9 +61,12 @@ function getArrayTipos(&$tipos){
 					$index++;
 					$tipos[$index] = $lastTag;
 				}
+
 				array_push($v1, $row[2]);
+
 			}
 		}
+
 
 	}
 	/*
