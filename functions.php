@@ -20,12 +20,15 @@ function comparaArrays($array1, $array2, &$indice){
 			$coincidencias = array_uintersect($array1, $array2[$i], "strcasecmp");
 			$result = sizeof($coincidencias);
 			if($result>0){
+				$indice = $i;
 				break;
 			}
 		}
-		return $result;
+
+		return $coincidencias;
 
 }
+
 function clasifyHistoric(){
 	include("conexion.php");
 	$i=0;

@@ -13,7 +13,7 @@
 	}else{
 		$tipo = $lwf;
 	}
-
+	echo $tipo;
 	if($tipo!=="Varios"){
 		echo getVotacionDetails($tipo, $ley);
 	}else{
