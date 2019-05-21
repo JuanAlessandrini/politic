@@ -21,7 +21,9 @@
     	var ley = $("#leyfutura").val();
 			if($("#learnWordFeedback")){
 				var lwf = $("#learnWordFeedback").val();
-			}else{var lwf="";}
+			}else{
+				var lwf="";
+			}
     	var parametros = {"ley": ley, "lwf" : lwf};
     	$.ajax({
             url:   "get-simulador.php",
