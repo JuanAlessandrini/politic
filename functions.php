@@ -43,7 +43,27 @@ function clasifyHistoric(){
 }
 
 function getArrayTipos(&$tipos){
+	$consulta="select * from tags";
+	$lastTag = "";
+	$index = -1;
+	if($result=$conexion->query($consulta)){
+		if($result->num_rows>0){
+			while($row=$result->fetch_array()){
+				if($row<>$lastTag){
+					$lastTag=$row[1];
+					if($index>=0){
+						$arrayMadre[$index] = $v1;
+						unset($v1);
+					}
+					$index++;
+					$tipos[$index] = $lastTag;
+				}
+				$v1 = array_push($row[2]);
+			}
+		}
 
+	}
+	/*
 	$tipos[0] = "Tributario";
 	$v1 = ["impuesto","impositiva", "impositivo", "impositivos","tributario", "tributarios", "tributaria"];
 	$arrayMadre[0] = $v1;
@@ -103,7 +123,7 @@ function getArrayTipos(&$tipos){
 	$tipos[14] = "Bienes Publicos";
 	$v1 = ["transferencia"];
 	$arrayMadre[14] = $v1;
-
+*/
 	return $arrayMadre;
 }
 function getVotacionDetails($tipo, $descripcion){
