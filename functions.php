@@ -15,16 +15,15 @@ function clasify($ley){
 }
 
 function comparaArrays($array1, $array2, &$indice){
-	$cantPalabras = sizeof($array2);
-	for($i=0; $i<$cantPalabras; $i++){
-		if($i > 200){break;}
-		$coincidencias = array_uintersect($array1, $array2[$i], "strcasecmp");
-		if(sizeof($coincidencias)>0){
-			$indice = $i;
-			break;
+		$largo = sizeof($array2);
+		for($i=0; $i<$largo;$i++){
+			$coincidencias = array_uintersect($array1, $array2[$i], "strcasecmp");
+			$result = sizeof($coincidencias);
+			if($result>0){
+				break;
+			}
 		}
-	}
-	return $coincidencias;
+		return $result;
 
 }
 function clasifyHistoric(){
@@ -44,31 +43,33 @@ function clasifyHistoric(){
 }
 
 function getArrayTipos(&$tipos){
-	$v1 = array();
 	include("conexion.php");
 	$consulta="select * from tags";
-	$lastTag = "";
-	$index = -1;
+	$tipos = array();
+	$v1 = array();
+	$arrayMadre = array();
+	$lastTipo = "";
 	if($result=$conexion->query($consulta)){
+		$ind = 0;
+		$pal = 0;
 		if($result->num_rows>0){
 			while($row=$result->fetch_array()){
-				if($row<>$lastTag){
-					$lastTag=$row[1];
-					if($index>=0){
-						$arrayMadre[$index] = $v1;
-						unset($v1);
-					}
-					$index++;
-					$tipos[$index] = $lastTag;
+				if($lastTipo!==$row[1]){
+						if($lastTipo!==""){
+								$tipos[$ind]= $lastTipo;
+								$arrayMadre[$ind]= $v1;
+								$ind++;
+								unset($v1);
+							}else{
+								$lastTipo=$row[1];
+							}
 				}
-
-				array_push($v1, $row[2]);
-
+				$v1[$pal]=$row[2];
+				$pal++;
 			}
 		}
-
-
 	}
+	return $arrayMadre;
 	/*
 	$tipos[0] = "Tributario";
 	$v1 = ["impuesto","impositiva", "impositivo", "impositivos","tributario", "tributarios", "tributaria"];
@@ -130,7 +131,7 @@ function getArrayTipos(&$tipos){
 	$v1 = ["transferencia"];
 	$arrayMadre[14] = $v1;
 */
-	return $arrayMadre;
+
 }
 function getVotacionDetails($tipo, $descripcion){
 	include("conexion.php");
