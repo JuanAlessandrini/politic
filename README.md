@@ -1,2 +1,2 @@
 # politic
-Is a work who uses data from the diputs chamber for analize the big data and get statics more clearest
+It is a work that aims to use the large amount of open data from the Diputes Chamber, to obtain statistics and projections about voting, in a more tangible way for the electorate.
