@@ -8,33 +8,29 @@
 
 	$ley = $_POST['ley'];
 	$lwf = $_POST['lwf'];
+	$newType = $_POST['nt'];
 	if($lwf==""){
 		$tipo = clasify($ley);
 	}else{
 		$tipo = $lwf;
+		learnLawClasification($tipo, $ley, $newType);
+		//echo "Ley '$ley' aprendida como $tipo";
 	}
-	echo $tipo;
+
 	if($tipo!=="Varios"){
 		echo getVotacionDetails($tipo, $ley);
 	}else{
 		echo "<p>No hemos podido identificar el tipo de Ley...</p>Por favor, enseñale a nuestro bot, que tipo de ley trata:
-		<select id='learnWordFeedback'>
-			<option>Penal</option>
-			<option>Constitucional</option>
-			<option>Codigo Electoral</option>
-			<option>Subsidios</option>
-			<option>Salud</option>
-			<option>Educacion</option>
-			<option>Comercio Exterior</option>
-			<option>Politica Monetaria</option>
-			<option>Mercado Interno</option>
-			<option>Derechos Humanos</option>
-			<option>Laboral</option>
-			<option>Ley de Presupuesto</option>
-			<option>Judicial</option>
-			<option>Bienes Publicos</option>
-			<option>Otra</option>
-		</select>";
+		<select id='learnWordFeedback'>";
+
+		$consulta="select * from tipo_clasification order by id DESC";
+		if($result = getQueryResult($consulta)){
+			while($row=$result->fetch_array()){
+				echo "<option value='$row[1]'>$row[1]</option>";
+			}
+		}
+
+		echo "</select>";
 	}
 
 

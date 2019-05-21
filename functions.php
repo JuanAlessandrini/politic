@@ -4,22 +4,21 @@ function clasify($ley){
 	$palabras_clave = array();
 	$indice = -1;
 	$palabras_asociadas = getArrayTipos($palabras_clave);
-	$palabras_ley = explode(" ",$ley);
-	$resultado = comparaArrays($palabras_ley, $palabras_asociadas, $indice);
-	$cantClasif = sizeof($palabras_asociadas);
+	$resultado = comparaArrays($ley, $palabras_asociadas, $indice);
+
 	if($indice>-1){
-		return "$palabras_clave[$indice]";
+		return $palabras_clave[$indice];
 	}else{
 		return "Varios";
 	}
 }
 
-function comparaArrays($array1, $array2, &$indice){
+function comparaArrays($ley, $array2, &$indice){
+	$array1 = explode(" ",$ley);
 		$largo = sizeof($array2);
 		for($i=0; $i<$largo;$i++){
 			$coincidencias = array_uintersect($array1, $array2[$i], "strcasecmp");
-			$result = sizeof($coincidencias);
-			if($result>0){
+			if(sizeof($coincidencias)>0){
 				$indice = $i;
 				break;
 			}
@@ -63,9 +62,8 @@ function getArrayTipos(&$tipos){
 								$arrayMadre[$ind]= $v1;
 								$ind++;
 								unset($v1);
-							}else{
-								$lastTipo=$row[1];
 							}
+								$lastTipo=$row[1];
 				}
 				$v1[$pal]=$row[2];
 				$pal++;
@@ -278,6 +276,26 @@ include("sharer.php");
 		}
 		return $strResult.$strVotos;
 }
+
+function learnLawClasification($tipo, $ley, $newType){
+	include("conexion.php");
+	if($tipo=="Otras"){
+		$consulta="INSERT INTO tipo_clasification(tipo) VALUES('$newType')";
+		$conexion->query($consulta);
+	}
+	$valor = getKeyWordFromSentence($ley);
+	$consulta="insert INTO tags(tag, word) VALUES('$tipo', '$valor')";
+	$conexion->query($consulta);
+
+}
+function getKeyWordFromSentence($ley){
+	$array1 = explode(" ", $ley);
+	$array2 = array("de", "no", "como", "ley", "la", "el", "por", "nuestros", "las", "los", "del", "a", "o", "su", "si", "y");
+	$i = 0;
+
+	$cleanArray = array_diff(array_diff($array1, $array2), $array2);
+	return $cleanArray[0];
+}
 /*
 
 
@@ -297,4 +315,18 @@ include("sharer.php");
 
 
 */
+
+function getQueryResult($consulta){
+	include("conexion.php");
+	if($result = $conexion->query($consulta)){
+			if($result->num_rows>0){
+				return $result;
+			}else{
+				return false;
+			}
+	}else{
+		return false;
+	}
+}
+
 ?>

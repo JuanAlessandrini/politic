@@ -24,7 +24,12 @@
 			}else{
 				var lwf="";
 			}
-    	var parametros = {"ley": ley, "lwf" : lwf};
+			if($("#newType")){
+				var nt = $("#newType").val();
+			}else{
+				var nt="";
+			}
+    	var parametros = {"ley": ley, "lwf" : lwf, "nt": nt};
     	$.ajax({
             url:   "get-simulador.php",
             type:  'POST',
@@ -40,5 +45,10 @@
                 $('#result-votacion').html(response);
             }
     });
+});
+$("#learnWordFeedback").live("change", function(){
+	if ($(this).val()=="Otras"){
+		$("#result-votacion").append("<input class='field1' type='input' placeholder='Ingresar la nueva clasificacion'/>");
+	}
 });
 </script>
